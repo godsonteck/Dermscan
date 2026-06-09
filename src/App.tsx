@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.js';
+import { ThemeProvider } from './context/ThemeContext.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import Navbar from './components/Navbar.js';
+import Footer from './components/Footer.js';
 import { Toaster } from 'react-hot-toast';
 
 // Import Pages
@@ -17,8 +19,9 @@ import ProfilePage from './pages/ProfilePage.js';
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <div className="bg-transparent min-h-screen text-slate-100 flex flex-col font-sans select-none antialiased">
+      <ThemeProvider>
+        <AuthProvider>
+        <div className="bg-transparent min-h-screen text-[var(--text-color)] flex flex-col font-sans select-none antialiased">
           {/* Top Sticky Navigation */}
           <Navbar />
 
@@ -77,6 +80,9 @@ export default function App() {
             </Routes>
           </main>
 
+          {/* Global Footer with HTU credentials & disclaimers */}
+          <Footer />
+
           {/* Action Popups Notification Toaster */}
           <Toaster
             position="bottom-right"
@@ -106,6 +112,7 @@ export default function App() {
           />
         </div>
       </AuthProvider>
+     </ThemeProvider>
     </BrowserRouter>
   );
 }

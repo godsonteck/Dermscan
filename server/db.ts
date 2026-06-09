@@ -89,11 +89,16 @@ export const db = {
     return newUser;
   },
 
-  updateUserProfile(userId: number, fullName: string) {
+  updateUserProfile(userId: number, updateData: any) {
     const schema = loadDb();
     const userIndex = schema.users.findIndex(u => u.id === userId);
     if (userIndex === -1) return null;
-    schema.users[userIndex].full_name = fullName;
+    
+    schema.users[userIndex] = {
+      ...schema.users[userIndex],
+      ...updateData
+    };
+    
     saveDb(schema);
     return schema.users[userIndex];
   },

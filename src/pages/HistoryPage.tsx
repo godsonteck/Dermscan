@@ -120,16 +120,16 @@ export default function HistoryPage() {
         {/* Header summary */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/5">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-violet-400 block mb-2">SCAN ARCHIVES</span>
+            <span className="text-xs font-extrabold tracking-[0.25em] text-violet-400 block mb-2">SCAN ARCHIVES</span>
             <h1 className="font-serif font-bold text-3xl text-white">Diagnostic History</h1>
-            <p className="text-white/50 text-xs mt-1">
+            <p className="text-white/60 text-sm mt-1">
               Currently listing {filteredScans.length} of {scans.length} analyzed reports.
             </p>
           </div>
 
           <Link
             to="/scan/new"
-            className="self-start md:self-auto px-4.5 py-2.5 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-xl font-bold text-xs text-white shadow-md shadow-violet-500/10 hover:opacity-95 transition flex items-center gap-1.5"
+            className="self-start md:self-auto px-4.5 py-3 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-xl font-extrabold text-sm text-white shadow-md shadow-violet-500/10 hover:opacity-95 transition flex items-center gap-1.5"
           >
             <PlusCircle className="w-4 h-4" /> Start New Scan
           </Link>
@@ -144,7 +144,7 @@ export default function HistoryPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by detected skin condition..."
-              className="bg-white/5 border border-white/10 hover:border-white/15 focus:border-violet-500/60 focus:ring-4 focus:ring-violet-500/10 text-slate-100 text-xs pl-10 pr-4 py-3 rounded-xl w-full placeholder-white/30 outline-none transition"
+              className="bg-white/5 border border-white/10 hover:border-white/15 focus:border-violet-500/60 focus:ring-4 focus:ring-violet-500/10 text-slate-100 text-sm pl-10 pr-4 py-3 rounded-xl w-full placeholder-white/30 outline-none transition font-medium"
             />
             <Search className="w-4.5 h-4.5 text-white/30 absolute left-3.5 top-1/2 -translate-y-1/2" />
           </div>
@@ -155,7 +155,7 @@ export default function HistoryPage() {
             <select
               value={severityFilter}
               onChange={(e) => setSeverityFilter(e.target.value)}
-              className="bg-white/5 border border-white/10 hover:border-white/15 focus:border-violet-500/60 focus:ring-4 focus:ring-violet-500/10 text-slate-100 text-xs px-4 py-3 rounded-xl w-full sm:w-44 outline-none transition cursor-pointer font-bold"
+              className="bg-white/5 border border-white/10 hover:border-white/15 focus:border-violet-500/60 focus:ring-4 focus:ring-violet-500/10 text-slate-100 text-sm px-4 py-3 rounded-xl w-full sm:w-44 outline-none transition cursor-pointer font-extrabold"
             >
               <option value="ALL" className="bg-[#111118]">All Severities</option>
               <option value="LOW" className="bg-[#111118]">Low Severity</option>

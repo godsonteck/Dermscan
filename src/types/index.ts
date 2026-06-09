@@ -3,6 +3,11 @@ export interface User {
   full_name: string;
   email: string;
   created_at: string;
+  skin_type?: string;          // e.g. dry, oily, combination, sensitive, normal
+  skin_sensitivity?: string;   // e.g. low, medium, high
+  skin_concerns?: string[];     // e.g. ["Acne", "Aging/Wrinkles", "Hyperpigmentation", "Sensitivity/Rosacea", "Eczema/Dryness", "Sun Damage"]
+  age_group?: string;          // e.g. under-18, 18-25, 26-35, 36-50, 50-plus
+  fitzpatrick_type?: string;   // Fitzpatrick skin phototypes Type I to VI
 }
 
 export interface Product {

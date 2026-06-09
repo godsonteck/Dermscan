@@ -5,6 +5,7 @@ import { Scan } from '../types/index.js';
 import AnalyzingLoader from '../components/AnalyzingLoader.js';
 import { ArrowLeft, Upload, Check, X, ShieldAlert, ShoppingBag, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext.js';
 
 const BODY_PARTS = ['Face', 'Scalp', 'Neck', 'Chest', 'Back', 'Arms', 'Hands', 'Legs', 'Feet', 'Other'];
 const SKIN_TYPES = ['Oily', 'Dry', 'Combination', 'Sensitive', 'Normal'];
@@ -17,6 +18,7 @@ const SYMPTOMS = [
 export default function NewScanPage() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
 
   // Wizard state machine
   const [step, setStep] = useState(1);
@@ -28,6 +30,118 @@ export default function NewScanPage() {
   const [duration, setDuration] = useState('');
   const [skinType, setSkinType] = useState('');
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+
+  // Pre-populate skin type if configured in active profile
+  React.useEffect(() => {
+    if (user && user.skin_type) {
+      const formatted = user.skin_type.charAt(0).toUpperCase() + user.skin_type.slice(1).toLowerCase();
+      if (SKIN_TYPES.includes(formatted)) {
+        setSkinType(formatted);
+      }
+    }
+  }, [user]);
+
+  // Camera capture state
+  const [useCamera, setUseCamera] = useState(false);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
+  const [isCameraLoading, setIsCameraLoading] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Stop camera helper
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      setCameraStream(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  // Start camera helper
+  const startCamera = async (mode: 'user' | 'environment' = facingMode) => {
+    setIsCameraLoading(true);
+    setCameraError(null);
+    setUseCamera(true);
+
+    try {
+      // Release any current stream
+      if (cameraStream) {
+        cameraStream.getTracks().forEach((t) => t.stop());
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: mode,
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+        audio: false
+      });
+
+      setCameraStream(stream);
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play().catch(e => console.error("Video play error:", e));
+      }
+    } catch (err: any) {
+      console.error("Camera access failed:", err);
+      // Fallback request
+      try {
+        const fallStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false
+        });
+        setCameraStream(fallStream);
+        if (videoRef.current) {
+          videoRef.current.srcObject = fallStream;
+          videoRef.current.play().catch(e => console.error("Fallback video play error:", e));
+        }
+      } catch (fallErr) {
+        console.error("Fallback general camera failed:", fallErr);
+        setCameraError('Unable to lock camera. Please check browser camera block-lists or use file uploads.');
+        toast.error('Camera connection could not be established.');
+      }
+    } finally {
+      setIsCameraLoading(false);
+    }
+  };
+
+  // Capture frame from the live video element onto a canvas
+  const capturePhoto = () => {
+    if (!videoRef.current) return;
+    try {
+      const video = videoRef.current;
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+        setImageSrc(dataUrl);
+        toast.success('Visual capture recorded successfully!');
+        stopCamera();
+        setUseCamera(false);
+      }
+    } catch (err) {
+      console.error("Capture capturePhoto error:", err);
+      toast.error('Failed to capture frame from video.');
+    }
+  };
+
+  // Clean up stream of camera when unmounting
+  React.useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [cameraStream]);
 
   // File Upload Handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,45 +312,181 @@ export default function NewScanPage() {
           <div className="space-y-6 bg-[#111118] border border-white/8 rounded-3xl p-6 md:p-8">
             <h2 className="text-xl font-bold font-serif text-white">Upload Area and Condition Details</h2>
             
-            {/* Dash Box Drag & Drop */}
-            <div 
-              onClick={triggerFileSelect}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              className="border-2 border-dashed border-white/10 hover:border-violet-500/50 bg-white/3 rounded-2xl h-56 flex flex-col items-center justify-center text-center p-6 cursor-pointer relative overflow-hidden transition group"
-            >
-              {imageSrc ? (
-                <>
-                  <img src={imageSrc} alt="Diagnostic attachment" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute top-3 right-3 flex gap-2">
-                    <span className="bg-emerald-500/90 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-lg flex items-center gap-1 shadow-md">
-                      <Check className="w-3.5 h-3.5" /> Uploaded
+            {/* Visual Capture / Image Upload Section */}
+            {!imageSrc && !useCamera && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* File Drop Area */}
+                <div 
+                  onClick={triggerFileSelect}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  className="border-2 border-dashed border-white/10 hover:border-violet-500/50 bg-white/3 rounded-2xl h-56 flex flex-col items-center justify-center text-center p-6 cursor-pointer relative overflow-hidden transition group"
+                >
+                  <Upload className="w-8 h-8 text-white/30 mb-2.5 group-hover:scale-110 transition duration-150" />
+                  <p className="text-sm font-bold text-slate-200">Upload Image File</p>
+                  <p className="text-[11px] text-white/40 mt-1 max-w-xs leading-relaxed">
+                    Click or drag & drop. Supports JPEG, PNG, WEBP files up to 10MB.
+                  </p>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Webcam Option */}
+                <button
+                  type="button"
+                  onClick={() => startCamera('environment')}
+                  className="border-2 border-dashed border-white/10 hover:border-violet-500/55 hover:bg-white/5 bg-white/3 rounded-2xl h-56 flex flex-col items-center justify-center text-center p-6 cursor-pointer relative overflow-hidden transition group text-left w-full"
+                >
+                  <div className="w-9 h-9 rounded-full bg-violet-500/10 flex items-center justify-center mb-2.5 group-hover:scale-110 transition duration-150 border border-violet-500/20 text-lg">
+                    📷
+                  </div>
+                  <p className="text-sm font-bold text-slate-200">Use Live Camera</p>
+                  <p className="text-[11px] text-white/40 mt-1 max-w-xs leading-relaxed">
+                    Access mobile lens or web-cam. Features an intuitive overlay guide.
+                  </p>
+                </button>
+              </div>
+            )}
+
+            {/* Active Camera Preview Area */}
+            {useCamera && (
+              <div className="relative border border-white/10 bg-black rounded-3xl overflow-hidden aspect-video max-h-[380px] w-full flex flex-col justify-center items-center">
+                {/* Video feed */}
+                <video
+                  ref={videoRef}
+                  playsInline
+                  autoPlay
+                  muted
+                  className="w-full h-full object-cover"
+                />
+
+                {/* Camera Overlay Guide Target */}
+                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  {/* Backdrop shadow mask to highlight target circle */}
+                  <div className="absolute inset-0 bg-black/40" />
+
+                  {/* Centering guide frame (cutout) */}
+                  <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border-2 border-dashed border-violet-400 flex items-center justify-center animate-pulse duration-1000 shadow-[0_0_0_9999px_rgba(17,17,24,0.65)]">
+                    
+                    {/* Corner Bracket markers */}
+                    <div className="absolute top-[-3px] left-[-3px] w-5 h-5 border-t-4 border-l-4 border-violet-400 rounded-tl-lg" />
+                    <div className="absolute top-[-3px] right-[-3px] w-5 h-5 border-t-4 border-r-4 border-violet-400 rounded-tr-lg" />
+                    <div className="absolute bottom-[-3px] left-[-3px] w-5 h-5 border-b-4 border-l-4 border-violet-400 rounded-bl-lg" />
+                    <div className="absolute bottom-[-3px] right-[-3px] w-5 h-5 border-b-4 border-r-4 border-violet-400 rounded-br-lg" />
+
+                    {/* Central micro croshair */}
+                    <div className="w-2.5 h-2.5 relative">
+                      <div className="absolute left-[4px] top-0 w-[2px] h-2.5 bg-violet-400/60" />
+                      <div className="absolute left-0 top-[4px] w-2.5 h-[2px] bg-violet-400/60" />
+                    </div>
+
+                    {/* Extra pulsing micro-ring */}
+                    <div className="absolute inset-[-10px] rounded-full border border-violet-500/20 animate-ping duration-[1800ms] opacity-50" />
+                  </div>
+
+                  {/* Align Instructions Pill */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/95 backdrop-blur-md border border-white/10 px-4 py-1 rounded-full shadow-md flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-[#d8b4fe]">
+                      Align lesion in center focus
                     </span>
-                    <button
-                      onClick={removeSelectedImage}
-                      className="bg-rose-500/90 text-white p-1 rounded-lg hover:bg-rose-600 transition shadow-md"
+                  </div>
+
+                  {/* Light guidance banner */}
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm px-3.5 py-1 rounded-lg border border-white/5">
+                    <span className="text-[9px] text-white/70 font-semibold tracking-wide">
+                      💡 Hold camera 4-6 inches (10-15cm) away with clear light
+                    </span>
+                  </div>
+                </div>
+
+                {/* Loading state bar */}
+                {isCameraLoading && (
+                  <div className="absolute inset-0 bg-[#111118] flex flex-col items-center justify-center gap-3">
+                    <div className="w-7 h-7 rounded-full border-2 border-violet-400 border-t-transparent animate-spin" />
+                    <span className="text-xs text-white/50 tracking-widest uppercase font-bold">Waking camera device...</span>
+                  </div>
+                )}
+
+                {/* Device connection errors */}
+                {cameraError && (
+                  <div className="absolute inset-0 bg-[#111118] flex flex-col items-center justify-center p-6 text-center gap-2.5">
+                    <span className="text-xl">⚠️</span>
+                    <p className="text-xs text-white/80 font-semibold leading-relaxed max-w-sm">{cameraError}</p>
+                    <button 
+                      onClick={() => setUseCamera(false)}
+                      className="bg-white/5 hover:bg-white/10 text-white text-xs px-4 py-2 rounded-lg border border-white/5 font-semibold"
                     >
-                      <X className="w-4 h-4" />
+                      Close and Use File Upload
                     </button>
                   </div>
-                </>
-              ) : (
-                <>
-                  <Upload className="w-10 h-10 text-white/30 mb-3 group-hover:scale-110 transition duration-150" />
-                  <p className="text-sm font-bold text-slate-200">Click to upload or drag & drop</p>
-                  <p className="text-[11px] text-white/40 mt-1 max-w-xs leading-relaxed">
-                    JPG, PNG, or WEBP format. Maximum image file capacity is 10MB.
-                  </p>
-                </>
-              )}
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
+                )}
+
+                {/* Controls overlay */}
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 flex items-center justify-between pointer-events-auto">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      stopCamera();
+                      setUseCamera(false);
+                    }}
+                    className="px-3.5 py-2 bg-black/60 hover:bg-black/80 rounded-xl text-white/70 hover:text-white transition border border-white/5 cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+                  >
+                    <X className="w-4 h-4" />
+                    Cancel
+                  </button>
+
+                  {/* Shutter capture trigger button */}
+                  <button
+                    type="button"
+                    onClick={capturePhoto}
+                    disabled={isCameraLoading || !!cameraError}
+                    className="p-1 rounded-full bg-white hover:bg-slate-100 transition duration-150 disabled:opacity-40 select-none shadow-xl border-4 border-black/35 hover:scale-105 active:scale-95 cursor-pointer"
+                  >
+                    <div className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center bg-transparent">
+                      <div className="w-5 h-5 rounded-full bg-violet-600" />
+                    </div>
+                  </button>
+
+                  {/* Mirror facing toggler button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextMode = facingMode === 'user' ? 'environment' : 'user';
+                      setFacingMode(nextMode);
+                      startCamera(nextMode);
+                    }}
+                    disabled={isCameraLoading || !!cameraError}
+                    className="px-3.5 py-2 bg-black/60 hover:bg-black/80 rounded-xl text-white/70 hover:text-white transition border border-white/5 cursor-pointer disabled:opacity-40 text-xs font-semibold flex items-center gap-1.5"
+                  >
+                    🔄 Switch
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Ready/Attached Image Preview Mode */}
+            {imageSrc && !useCamera && (
+              <div className="relative border border-white/10 bg-white/3 rounded-2xl h-56 flex flex-col items-center justify-center overflow-hidden">
+                <img src={imageSrc} alt="Diagnostic attachment" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute top-3 right-3 flex gap-2">
+                  <span className="bg-emerald-500/90 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-lg flex items-center gap-1 shadow-md">
+                    <Check className="w-3.5 h-3.5" /> Ready for Scan
+                  </span>
+                  <button
+                    onClick={removeSelectedImage}
+                    className="bg-rose-500/90 text-white p-1 rounded-lg hover:bg-rose-600 transition shadow-md"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Region Selector */}
             <div className="space-y-2">

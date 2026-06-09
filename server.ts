@@ -193,13 +193,20 @@ app.get('/api/users/profile', authenticateToken, (req: AuthenticatedRequest, res
 });
 
 app.put('/api/users/profile', authenticateToken, (req: AuthenticatedRequest, res: Response): void => {
-  const { full_name } = req.body;
+  const { full_name, skin_type, skin_sensitivity, skin_concerns, age_group, fitzpatrick_type } = req.body;
   if (!full_name) {
     res.status(400).json({ error: 'Full name cannot be blank' });
     return;
   }
 
-  const updated = db.updateUserProfile(req.user!.id, full_name);
+  const updated = db.updateUserProfile(req.user!.id, {
+    full_name,
+    skin_type,
+    skin_sensitivity,
+    skin_concerns,
+    age_group,
+    fitzpatrick_type
+  });
   if (!updated) {
     res.status(404).json({ error: 'User account not found' });
     return;

@@ -12,18 +12,141 @@
   --color-fuchsia-600: #0d9488;
 }
 
+:root {
+  --bg-color: #f8fafc;
+  --text-color: #0f172a;
+  --radial-bg: radial-gradient(circle at 50% 50%, #f1f5f9 0%, #fafbfc 100%);
+  --grid-color: rgba(15, 23, 42, 0.03);
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(15, 23, 42, 0.08);
+}
+
+html.dark {
+  --bg-color: #020617;
+  --text-color: #e2e8f0;
+  --radial-bg: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+  --grid-color: rgba(148, 163, 184, 0.02);
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --card-border: rgba(148, 163, 184, 0.1);
+}
+
 /* Global design configurations conforming to Immersive Tech Theme */
 body {
-  background-color: #020617;
-  color: #e2e8f0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   background-image: 
-    radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%),
-    linear-gradient(rgba(148, 163, 184, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.02) 1px, transparent 1px);
+    var(--radial-bg),
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size: 100% 100%, 32px 32px, 32px 32px;
+  transition: background-color 0.2s ease, color 0.15s ease;
+}
+
+/* Light mode overrides for high-contrast card readability */
+html.light {
+  .bg-\[\#111118\] {
+    background-color: #ffffff !important;
+    border-color: rgba(15, 23, 42, 0.07) !important;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 8px -1px rgba(15, 23, 42, 0.02) !important;
+  }
+  .bg-\[\#111118\]\/80 {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(15, 23, 42, 0.07) !important;
+    backdrop-filter: blur(12px);
+  }
+  .bg-\[\#111118\]\/40 {
+    background-color: rgba(15, 23, 42, 0.02) !important;
+    border-color: rgba(15, 23, 42, 0.05) !important;
+  }
+  .bg-\[\#0a0a0f\] {
+    background-color: #f1f5f9 !important;
+  }
+  .bg-\[\#09090e\] {
+    background-color: #f8fafc !important;
+    border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+  }
+  .bg-\[\#020617\]\/80 {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(15, 23, 42, 0.06) !important;
+    backdrop-filter: blur(12px);
+  }
+  
+  /* Semi-transparent white bg & border mappings */
+  .bg-white\/3, .bg-white\/5, .bg-white\/8, .bg-white\/10 {
+    background-color: rgba(15, 23, 42, 0.04) !important;
+  }
+  .hover\:bg-white\/5:hover {
+    background-color: rgba(15, 23, 42, 0.06) !important;
+  }
+  .hover\:bg-white\/10:hover {
+    background-color: rgba(15, 23, 42, 0.08) !important;
+  }
+  
+  .border-white\/5, .border-white\/7, .border-white\/8, .border-white\/10, .border-white\/12, .border-white\/20, .border-white\/25 {
+    border-color: rgba(15, 23, 42, 0.07) !important;
+  }
+  .hover\:border-white\/20:hover {
+    border-color: rgba(15, 23, 42, 0.15) !important;
+  }
+  
+  /* Text and details color contrast adjustments */
+  .text-white {
+    color: #0f172a !important;
+  }
+  .text-white\/95, .text-white\/90, .text-white\/85, .text-white\/80, .text-white\/70, .text-slate-100 {
+    color: #1e293b !important;
+  }
+  .text-white\/65, .text-white\/60, .text-white\/55, .text-white\/50, .text-white\/45 {
+    color: #475569 !important;
+  }
+  .text-white\/35, .text-white\/30, .text-white\/40, .text-white\/25 {
+    color: #64748b !important;
+  }
+  
+  .hover\:text-white:hover {
+    color: #0f172a !important;
+  }
+  
+  .text-violet-300 {
+    color: #0369a1 !important;
+  }
+  .text-violet-400 {
+    color: #0284c7 !important;
+  }
+  
+  /* Active states */
+  .bg-violet-500\/10 {
+    background-color: rgba(2, 132, 199, 0.08) !important;
+    color: #0284c7 !important;
+  }
+  
+  /* Input/Textarea light overrides */
+  input, select, textarea {
+    background-color: #ffffff !important;
+    border-color: rgba(15, 23, 42, 0.12) !important;
+    color: #0f172a !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: #94a3b8 !important;
+  }
+  .placeholder-white\/30::placeholder {
+    color: #94a3b8 !important;
+  }
+  
+  /* Badges and tags overrides */
+  .bg-white\/5 {
+    background-color: rgba(15, 23, 42, 0.04) !important;
+    color: #475569 !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+  }
+  
+  /* Glow adjustments */
+  .glow-cyan {
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.04) !important;
+  }
 }
 
 /* Radar Sweep Animation */
@@ -75,8 +198,8 @@ body {
 
 /* High-tech diagnostic cards style modifier */
 .card-shine {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
   backdrop-filter: blur(12px);
 }
 

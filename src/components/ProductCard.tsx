@@ -42,16 +42,16 @@ export default function ProductCard({ product }: { product: Product; key?: any }
           <h4 className="text-base font-bold text-slate-100 leading-tight">{name}</h4>
         </div>
 
-        <p className="text-xs text-white/60 mb-4 line-clamp-3 leading-relaxed">
+        <p className="text-sm text-white/70 mb-4 leading-relaxed">
           {description}
         </p>
 
         {key_ingredients && key_ingredients.length > 0 && (
           <div className="mb-4">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-white/40 block mb-1.5">Key Ingredients</span>
+            <span className="text-xs uppercase font-extrabold tracking-widest text-white/50 block mb-1.5">Key Ingredients</span>
             <div className="flex flex-wrap gap-1.5">
               {key_ingredients.map((ingredient, idx) => (
-                <span key={idx} className="bg-white/5 text-white/70 px-2 py-0.5 rounded text-[10px] font-medium">
+                <span key={idx} className="bg-white/5 text-white/80 px-2.5 py-1 rounded text-xs font-bold">
                   {ingredient}
                 </span>
               ))}
@@ -62,14 +62,14 @@ export default function ProductCard({ product }: { product: Product; key?: any }
 
       <div className="pt-4 border-t border-white/5 flex flex-col gap-2">
         {how_to_use && (
-          <div className="text-[11px] leading-snug">
-            <span className="text-white/45 font-bold">Directions: </span>
-            <span className="text-white/60 italic">{how_to_use}</span>
+          <div className="text-sm leading-relaxed">
+            <span className="text-white/50 font-extrabold">Directions: </span>
+            <span className="text-white/70 italic">{how_to_use}</span>
           </div>
         )}
-        <div className="flex justify-between items-center mt-1">
-          <span className="text-xs font-semibold text-white/45">Price Range</span>
-          <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+        <div className="flex justify-between items-center mt-1.5">
+          <span className="text-sm font-bold text-white/50">Price Range</span>
+          <span className="text-sm font-extrabold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md">
             {price_range || '$10 - $20'}
           </span>
         </div>

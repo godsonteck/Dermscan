@@ -37,18 +37,18 @@ export default function ScanResultPage() {
   }, [id]);
 
   if (isLoading) {
-    return <LoadingSpinner fullPage={true} label="Formulating diagnostic dossier report..." />;
+    return <LoadingSpinner fullPage={true} label="Opening your skin check report..." />;
   }
 
   if (!scan) {
     return (
       <div className="bg-[#0a0a0f] min-h-[calc(100vh-68px)] flex flex-col items-center justify-center p-6 text-center">
         <AlertTriangle className="w-12 h-12 text-rose-500 mb-4" />
-        <h2 className="text-xl font-bold font-serif mb-2">Diagnostic Report Not Found</h2>
+        <h2 className="text-xl font-bold font-serif mb-2">Skin Check Not Found</h2>
         <p className="text-xs text-white/50 max-w-sm mb-6">
-          The requested scan document doesn't exist, has been erased, or you do not have permission to view it.
+          The requested skin check report could not be found. It may have been deleted, or you might not have access to it.
         </p>
-        <Link to="/dashboard" className="px-6 py-3 bg-violet-650 rounded-xl text-xs font-bold text-white transition hover:bg-violet-700">
+        <Link to="/dashboard" className="px-6 py-3 bg-violet-600 rounded-xl text-xs font-bold text-white transition hover:opacity-90">
           Return to Dashboard
         </Link>
       </div>
@@ -95,14 +95,14 @@ export default function ScanResultPage() {
             className="flex items-center gap-1.5 text-xs font-semibold text-white/55 hover:text-white transition"
           >
             <ArrowLeft className="w-4 h-4" />
-            BACK TO SCAN LIST
+            BACK TO PAST CHECKS
           </Link>
 
           <Link
             to="/scan/new"
             className="px-4 py-2 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-xl font-bold text-xs tracking-wide text-white shadow-md shadow-violet-500/20 hover:opacity-95 transition flex items-center gap-1.5"
           >
-            <Plus className="w-4 h-4" /> New Analysis
+            <Plus className="w-4 h-4" /> Start New Check
           </Link>
         </div>
 
@@ -126,7 +126,7 @@ export default function ScanResultPage() {
           <div className="flex-1 space-y-3 text-center md:text-left w-full">
             <div>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1 text-xs text-white/50 mb-1">
-                <span className="flex items-center gap-1 font-semibold uppercase tracking-wider text-violet-400">Scan result report</span>
+                <span className="flex items-center gap-1 font-semibold uppercase tracking-wider text-violet-400 font-mono">Skin Check Report</span>
                 <span className="w-1 h-1 bg-white/20 rounded-full hidden md:block" />
                 <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{formattedDate}</span>
               </div>
@@ -140,7 +140,7 @@ export default function ScanResultPage() {
               <ConfidenceBadge confidence={scan.confidence} />
               {scan.body_part && (
                 <span className="bg-white/5 border border-white/8 text-[11px] text-white/60 font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
-                  Region: {scan.body_part}
+                  Body Part: {scan.body_part}
                 </span>
               )}
             </div>
@@ -153,9 +153,9 @@ export default function ScanResultPage() {
             <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-500" />
             <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5 animate-pulse" />
             <div className="space-y-1">
-              <h4 className="text-xs font-bold text-amber-500 uppercase tracking-widest">Non-Skin Specimen Detected</h4>
+              <h4 className="text-xs font-bold text-amber-500 uppercase tracking-widest">Image Does Not Look Like Skin</h4>
               <p className="text-xs text-white/70 leading-relaxed font-light">
-                Our medical AI pipeline has flagged this uploaded photograph as unlikely to show human skin, moles, hair, or nails. For highly accurate and personalized skincare recommendations, please submit a well-lit, sharp, and centered close-up photograph of your specific skin area.
+                Our skin checked has flagged this photo as unlikely to show human skin, moles, hair, or nails. For highly accurate results and product suggestions, please submit a well-lit, sharp, and centered close-up photo of your skin.
               </p>
             </div>
           </div>
@@ -165,33 +165,33 @@ export default function ScanResultPage() {
         <div className="flex border-b border-white/5 gap-4 md:gap-8 pb-px print:hidden overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab(Tab.DIAGNOSIS)}
-            className={`py-3 px-1 text-xs font-bold uppercase tracking-wider flex items-center gap-2 border-b-2 transition ${
+            className={`py-3.5 px-1 text-sm font-extrabold uppercase tracking-wider flex items-center gap-2 border-b-2 transition ${
               activeTab === Tab.DIAGNOSIS 
                 ? 'border-violet-500 text-violet-400' 
                 : 'border-transparent text-white/60 hover:text-white'
             }`}
           >
-            <Stethoscope className="w-4.5 h-4.5" /> Diagnosis
+            <Stethoscope className="w-5 h-5" /> Diagnosis
           </button>
           <button
             onClick={() => setActiveTab(Tab.PRODUCTS)}
-            className={`py-3 px-1 text-xs font-bold uppercase tracking-wider flex items-center gap-2 border-b-2 transition ${
+            className={`py-3.5 px-1 text-sm font-extrabold uppercase tracking-wider flex items-center gap-2 border-b-2 transition ${
               activeTab === Tab.PRODUCTS 
                 ? 'border-violet-500 text-violet-400' 
                 : 'border-transparent text-white/60 hover:text-white'
             }`}
           >
-            <ShoppingBag className="w-4.5 h-4.5" /> Skincare Products
+            <ShoppingBag className="w-5 h-5" /> Skincare Products
           </button>
           <button
             onClick={() => setActiveTab(Tab.CARE_PLAN)}
-            className={`py-3 px-1 text-xs font-bold uppercase tracking-wider flex items-center gap-2 border-b-2 transition ${
+            className={`py-3.5 px-1 text-sm font-extrabold uppercase tracking-wider flex items-center gap-2 border-b-2 transition ${
               activeTab === Tab.CARE_PLAN 
                 ? 'border-violet-500 text-violet-400' 
                 : 'border-transparent text-white/60 hover:text-white'
             }`}
           >
-            <HeartHandshake className="w-4.5 h-4.5" /> Daily Care Program
+            <HeartHandshake className="w-5 h-5" /> Daily Care Program
           </button>
         </div>
 
@@ -201,48 +201,48 @@ export default function ScanResultPage() {
         {(activeTab === Tab.DIAGNOSIS || window.location.search.includes('print')) && (
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Description */}
-            <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-3 shadow-md">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-violet-400 block">About this condition</span>
-              <p className="text-sm md:text-base text-white/80 leading-relaxed font-light">
-                {scan.description || 'Descriptions are formulated directly by deep medical AI matching guidelines...'}
+            <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-3.5 shadow-md">
+              <span className="text-sm font-black tracking-widest text-violet-400 block font-mono">ABOUT THIS SKIN CONCERN</span>
+              <p className="text-base md:text-lg text-white/90 leading-relaxed font-normal">
+                {scan.description || 'Our skin analysis results are being made...'}
               </p>
             </div>
 
             {/* Causes and Risks */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Causes */}
-              <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-4 shadow-md">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-violet-400 block">Common underlying causes</span>
-                {causesList.length > 0 ? (
-                  <ul className="space-y-2.5 text-xs leading-relaxed text-white/70">
-                    {causesList.map((cause, idx) => (
-                      <li key={idx} className="flex gap-2.5 items-start">
-                        <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0 mt-1.5" />
-                        <span>{cause}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-xs text-white/45 italic font-medium">No particular background cause profiles mapped.</p>
-                )}
-              </div>
+               {/* Causes */}
+               <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-4 shadow-md">
+                 <span className="text-xs font-extrabold tracking-widest text-violet-400 block font-mono">COMMON CAUSES</span>
+                 {causesList.length > 0 ? (
+                   <ul className="space-y-4 text-sm md:text-base leading-relaxed text-white/85 font-normal">
+                     {causesList.map((cause, idx) => (
+                       <li key={idx} className="flex gap-2.5 items-start">
+                         <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0 mt-2.5" />
+                         <span>{cause}</span>
+                       </li>
+                     ))}
+                   </ul>
+                 ) : (
+                   <p className="text-sm md:text-base text-white/60 italic font-medium">No typical causes specified.</p>
+                 )}
+               </div>
 
-              {/* Risks */}
-              <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-3 shadow-md">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-violet-400 block">Clinical Risk Factors</span>
-                <p className="text-xs text-white/70 leading-relaxed font-light">
-                  {scan.risk_factors || 'Risk factors are based strictly on surrounding skin properties and symptoms.'}
-                </p>
-              </div>
+               {/* Risks */}
+               <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-3 shadow-md">
+                 <span className="text-xs font-extrabold tracking-widest text-violet-400 block font-mono">POTENTIAL RISK FACTORS</span>
+                 <p className="text-sm md:text-base text-white/85 leading-relaxed font-normal">
+                   {scan.risk_factors || 'Risk factors based on visible skin properties and symptoms.'}
+                 </p>
+               </div>
             </div>
 
             {/* When to consult warning banner */}
             <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 flex gap-4 text-left shadow-md">
-              <AlertCircle className="w-6 h-6 text-amber-400 shrink-0 mt-0.5" />
+              <AlertCircle className="w-6 h-6 text-amber-500 shrink-0 mt-0.5 animate-pulse" />
               <div className="space-y-1.5">
-                <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wide">When to seek professional diagnosis</h4>
-                <p className="text-xs text-white/70 leading-relaxed max-w-2xl font-light">
-                  {scan.when_to_see_doctor || 'If the condition worsens, spreads, bleeds or starts draining pus, consult a matching dermatologist.'}
+                <h4 className="text-sm font-black text-amber-500 uppercase tracking-wide">WHEN TO SEE A DOCTOR</h4>
+                <p className="text-sm text-white/85 leading-relaxed max-w-2xl font-normal">
+                  {scan.when_to_see_doctor || 'If the condition does not improve, spreads, hurts, bleeds, or changes color, please consult with a qualified dermatologist near you.'}
                 </p>
               </div>
             </div>
@@ -256,9 +256,9 @@ export default function ScanResultPage() {
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Products advisory banner */}
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 flex gap-3 text-left items-center shadow-sm">
-              <span className="text-lg">💡</span>
-              <p className="text-xs text-emerald-400 font-light leading-snug">
-                These generic recommendations are tailored based on the detected condition and skin parameters. Consult professional support before introducing intense ingredients.
+              <span className="text-xl">💡</span>
+              <p className="text-sm text-emerald-400 font-semibold leading-relaxed">
+                These product suggestions are tailored for the detected condition. Always do a patch test or consult a doctor before using new products.
               </p>
             </div>
 
@@ -270,8 +270,8 @@ export default function ScanResultPage() {
                 ))}
               </div>
             ) : (
-              <div className="bg-[#111118] rounded-2xl border border-white/5 py-12 text-center text-xs text-white/45">
-                No specific targeted product logs was formulated during diagnostic scans.
+              <div className="bg-[#111118] rounded-2xl border border-white/5 py-12 text-center text-sm text-white/55">
+                No custom products were generated for this check.
               </div>
             )}
           </div>
@@ -284,20 +284,20 @@ export default function ScanResultPage() {
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Immediate Steps list */}
             <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-4 shadow-md">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-violet-400 block">Immediate Treatment steps</span>
+              <span className="text-xs font-extrabold tracking-widest text-violet-400 block font-mono">NEXT IMPORTANT STEPS</span>
               {stepsList.length > 0 ? (
                 <div className="space-y-4">
                   {stepsList.map((stepItem, idx) => (
-                    <div key={idx} className="flex gap-4 items-start text-xs text-white/75">
-                      <span className="w-6 h-6 rounded-full bg-violet-500/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                    <div key={idx} className="flex gap-4 items-start text-sm text-white/85">
+                      <span className="w-7 h-7 rounded-full bg-violet-500/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-extrabold text-sm shrink-0 mt-0.5">
                         {idx + 1}
                       </span>
-                      <p className="leading-relaxed font-light">{stepItem}</p>
+                      <p className="leading-relaxed font-normal">{stepItem}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-white/45 italic">No urgent steps requested.</p>
+                <p className="text-sm text-white/50 italic">No urgent steps suggested.</p>
               )}
             </div>
 
@@ -305,47 +305,36 @@ export default function ScanResultPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Daily routine */}
               <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-4 shadow-md">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 block">Skincare Routines</span>
+                <span className="text-xs font-extrabold tracking-widest text-emerald-400 block font-mono">DAILY CARE ROUTINE</span>
                 {routineList.length > 0 ? (
-                  <ul className="space-y-3 text-xs leading-relaxed text-white/70">
+                  <ul className="space-y-4 text-sm leading-relaxed text-white/80">
                     {routineList.map((task, idx) => (
                       <li key={idx} className="flex gap-2.5 items-start">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 mt-1.5 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 mt-2" />
                         <span>{task}</span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-xs text-white/45 italic">No prescriptive skin routines required.</p>
+                  <p className="text-sm text-white/50 italic">No specific daily routines needed.</p>
                 )}
               </div>
 
               {/* Avoid panel */}
               <div className="bg-[#111118] border border-white/5 rounded-2xl p-6 md:p-8 space-y-4 shadow-md">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 block">Ingredients & Actions to avoid</span>
+                <span className="text-xs font-extrabold tracking-widest text-rose-400 block font-mono">THINGS TO AVOID</span>
                 {avoidList.length > 0 ? (
-                  <ul className="space-y-3 text-xs leading-relaxed text-white/70">
+                  <ul className="space-y-4 text-sm leading-relaxed text-white/80">
                     {avoidList.map((avoidItem, idx) => (
-                      <li key={idx} className="flex gap-2.5 items-start text-rose-200/90">
-                        <span className="text-rose-400 shrink-0 text-xs mt-0.5">✕</span>
+                      <li key={idx} className="flex gap-2.5 items-start text-rose-200/90 font-medium">
+                        <span className="text-rose-400 shrink-0 text-sm mt-0.5">✕</span>
                         <span>{avoidItem}</span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-xs text-white/45 italic">No specific constraints identified.</p>
+                  <p className="text-sm text-white/50 italic">No typical restrictions identified.</p>
                 )}
-              </div>
-            </div>
-
-            {/* Clinical disclaimer note card */}
-            <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex gap-3 text-left shadow-sm">
-              <span className="text-lg">⚠️</span>
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-rose-400 block mb-1">Medical Disclaimer</span>
-                <p className="text-[11px] text-white/60 leading-normal max-w-xl font-light">
-                  {scan.disclaimer || 'DermScan AI serves purely informational outputs. Always seek local practitioner support.'}
-                </p>
               </div>
             </div>
           </div>
@@ -355,16 +344,16 @@ export default function ScanResultPage() {
         <div className="flex gap-4 pt-6 border-t border-white/5 print:hidden">
           <button
             onClick={() => window.print()}
-            className="flex-1 px-5 py-3.5 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded-xl font-bold text-xs text-white transition flex items-center justify-center gap-1.5 shadow-md"
+            className="flex-1 px-5 py-4 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded-xl font-extrabold text-sm text-white transition flex items-center justify-center gap-1.5 shadow-md font-mono"
           >
-            <Printer className="w-4 h-4" /> Save as PDF / Print
+            <Printer className="w-4.5 h-4.5" /> Save as PDF / Print
           </button>
           
           <Link
             to="/scan/new"
-            className="flex-[2] py-3.5 bg-gradient-to-r from-violet-500 to-indigo-600 hover:opacity-95 text-white font-serif font-black rounded-xl text-center text-xs tracking-wider shadow-lg shadow-violet-500/25 active:scale-98 transition block"
+            className="flex-[2] py-4 bg-gradient-to-r from-violet-500 to-indigo-600 hover:opacity-95 text-white font-serif font-black rounded-xl text-center text-sm tracking-wider shadow-lg shadow-violet-500/25 active:scale-98 transition block"
           >
-            START AN ANALYZING SCAN
+            START NEW SKIN CHECK
           </Link>
         </div>
 

@@ -37,97 +37,100 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Pulsing Badge */}
-        <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/25 rounded-full px-4 py-1.5 mb-6 animate-pulse z-10">
-          <span className="w-2 h-2 rounded-full bg-violet-400 shadow-[0_0_10px_#38bdf8]" />
-          <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-violet-300 font-mono">
-            DermScan SYSTEMS // STATUS: ACTIVE
-          </span>
+        {/* Clickable descriptive badge */}
+        <div className="inline-flex items-center gap-1.5 bg-violet-500/10 border border-violet-500/20 rounded-full px-3.5 py-1.5 mb-6 text-xs text-violet-300 font-medium z-10 select-none">
+          ✨ Simple AI-Powered Skin Helper
         </div>
 
         {/* Title */}
-        <h1 className="font-serif font-black text-5xl md:text-7xl tracking-tight text-white mb-6 leading-[1.08]">
-          Detect. Diagnose.<br />
+        <h1 className="font-serif font-black text-4xl md:text-6xl tracking-tight text-white mb-6 leading-[1.15]">
+          Check Your Skin.<br />
           <span className="bg-gradient-to-r from-violet-400 via-indigo-300 to-emerald-400 bg-clip-text text-transparent">
-            Heal Your Skin.
+            Understand the Signs.
           </span>
         </h1>
 
         {/* Subhead */}
-        <p className="text-base md:text-lg text-white/65 max-w-2xl mb-10 leading-relaxed font-light">
-          Upload a photo of your skin condition, input symptoms, and immediately receive an AI-powered diagnostic classification, severity review, clinical causes, and individual skincare product recommendations.
+        <p className="text-sm md:text-base text-white/70 max-w-2xl mb-10 leading-relaxed font-normal">
+          Simply upload a clear photo of your skin concern and tell us how it feels. Get an instant, easy-to-read AI report highlighting potential conditions, likely causes, and gentle skincare product suggestions.
         </p>
 
         {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full mb-12">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full mb-12 z-15 relative">
           <Link
             to={isAuthenticated ? "/scan/new" : "/register"}
-            className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-violet-500 to-fuchsia-600 border-none rounded-xl font-bold text-sm text-white tracking-wider hover:opacity-95 shadow-xl shadow-violet-500/30 hover:-translate-y-0.5 active:scale-98 transition duration-200"
+            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-violet-600 to-indigo-600 border-none rounded-xl font-bold text-xs text-white tracking-widest hover:opacity-95 shadow-xl shadow-violet-500/15 hover:-translate-y-0.5 active:scale-98 transition duration-200 cursor-pointer"
           >
-            START FREE SCAN →
+            START NEW SKIN CHECK →
           </Link>
           <a
             href="#how-it-works"
-            className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl font-bold text-sm text-white/80 hover:text-white transition duration-200"
+            className="w-full sm:w-auto px-8 py-3.5 bg-white/5 hover:bg-white/10 border border-white/8 hover:border-white/15 rounded-xl font-bold text-xs text-white/80 hover:text-white transition duration-200"
           >
             How it works
           </a>
         </div>
 
         {/* Quick Checkpoints */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs text-white/45">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs text-white/50">
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Educational Sandbox
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Easy to use
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Gemini 3.5 AI Powered
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Smart AI insights
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Instantly Retrievable
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Instant reports
           </span>
         </div>
       </section>
 
       {/* SECTION 2: HOW IT WORKS */}
-      <section id="how-it-works" className="py-20 px-6 border-y border-white/5 bg-[#111118]/40 relative">
+      <section id="how-it-works" className="py-16 px-6 border-y border-white/5 bg-[#111118]/40 relative">
         <div className="max-w-7xl mx-auto">
           {/* Eyebrow / Headline */}
-          <div className="text-center mb-16">
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-violet-400 block mb-3">HOW IT WORKS</span>
-            <h2 className="font-serif font-bold text-3xl md:text-5xl text-slate-100">
-              Three Steps To Absolute Clarity
+          <div className="text-center mb-12">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-400 block mb-2">SIMPLE METHOD</span>
+            <h2 className="font-serif font-bold text-2xl md:text-4xl text-slate-100">
+              Three Easy Steps To Get Your Report
             </h2>
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Step 1 */}
-            <div className="bg-[#111118]/80 border border-white/8 rounded-2xl p-8 relative overflow-hidden group hover:border-white/15 transition-all">
-              <span className="absolute top-2 right-4 font-serif text-8xl font-black text-white/[0.03] select-none">01</span>
-              <div className="text-4xl mb-6">📸</div>
-              <h3 className="text-base font-bold text-white mb-3">Upload a Photo</h3>
-              <p className="text-xs text-white/60 leading-relaxed">
-                Take a clear close-up picture of the affected skin area on your face, neck, arms, or back and upload it cleanly.
+            <div className="bg-[#111118]/80 border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-white/10 transition-all text-left">
+              <span className="absolute top-2 right-4 font-serif text-6xl font-black text-white/[0.02] select-none">01</span>
+              <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center text-lg mb-4 text-violet-400">
+                📷
+              </div>
+              <h3 className="text-sm font-bold text-slate-100 mb-2">1. Upload your photo</h3>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">
+                Take a clear, close-up photo of your skin concern under good light. Our camera guide will help you center it.
               </p>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-[#111118]/80 border border-white/8 rounded-2xl p-8 relative overflow-hidden group hover:border-white/15 transition-all">
-              <span className="absolute top-2 right-4 font-serif text-8xl font-black text-white/[0.03] select-none">02</span>
-              <div className="text-4xl mb-6">🔬</div>
-              <h3 className="text-base font-bold text-white mb-3">Symptom Assessment</h3>
-              <p className="text-xs text-white/60 leading-relaxed">
-                Select your matching symptoms (itching, scaling, redness, burning) to complement image visual indicators.
+            <div className="bg-[#111118]/80 border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-white/10 transition-all text-left">
+              <span className="absolute top-2 right-4 font-serif text-6xl font-black text-white/[0.02] select-none">02</span>
+              <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center text-lg mb-4 text-violet-400">
+                ✍️
+              </div>
+              <h3 className="text-sm font-bold text-slate-100 mb-2">2. Tell us your symptoms</h3>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">
+                Select how your skin feels. Choose from options like itching, dryness, flushing, or scaling to customize your scan.
               </p>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-[#111118]/80 border border-white/8 rounded-2xl p-8 relative overflow-hidden group hover:border-white/15 transition-all">
-              <span className="absolute top-2 right-4 font-serif text-8xl font-black text-white/[0.03] select-none">03</span>
-              <div className="text-4xl mb-6">💊</div>
-              <h3 className="text-base font-bold text-white mb-3">Dermatology Insight</h3>
-              <p className="text-xs text-white/60 leading-relaxed">
-                Receive medical conditions detection, causes, severity warnings, daily care routines, and clinically useful products.
+            <div className="bg-[#111118]/80 border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-white/10 transition-all text-left">
+              <span className="absolute top-2 right-4 font-serif text-6xl font-black text-white/[0.02] select-none">03</span>
+              <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center text-lg mb-4 text-violet-400">
+                📃
+              </div>
+              <h3 className="text-sm font-bold text-slate-100 mb-2">3. Receive your care profile</h3>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">
+                Review possible matching conditions, daily wash routines, and real product brands customized for your skin.
               </p>
             </div>
           </div>
@@ -135,106 +138,107 @@ export default function LandingPage() {
       </section>
 
       {/* SECTION 3: FEATURES */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-violet-400 block mb-3">PRODUCT OFFERINGS</span>
-          <h2 className="font-serif font-bold text-3xl md:text-5xl text-slate-100">
-            Everything You Need In One Dashboard
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-400 block mb-2">HOW IT HELPS YOU</span>
+          <h2 className="font-serif font-bold text-2xl md:text-4xl text-slate-100">
+            Smart Features Built For Simplicity
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* F1 */}
-          <div className="bg-[#111118] border border-white/5 p-6 rounded-2xl flex gap-4">
-            <FlaskConical className="w-8 h-8 text-violet-400 shrink-0" />
+          <div className="bg-[#111118]/80 border border-white/5 p-5 rounded-2xl flex gap-4 text-left">
+            <div className="p-2.5 h-10 rounded-xl bg-violet-500/5 text-violet-400 border border-violet-500/15 shrink-0">
+              <FlaskConical className="w-5 h-5" />
+            </div>
             <div>
-              <h4 className="text-sm font-bold text-white mb-1.5">Deep Image Classification</h4>
-              <p className="text-xs text-white/60 leading-relaxed">AI analyzes skin lesions, pigmentations, and pores to classify condition variants.</p>
+              <h4 className="text-sm font-bold text-slate-100 mb-1">Skin Photo Analysis</h4>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">Smart AI carefully reads skin spots, moles, and rashes to match them with medical databases.</p>
             </div>
           </div>
 
           {/* F2 */}
-          <div className="bg-[#111118] border border-white/5 p-6 rounded-2xl flex gap-4">
-            <Stethoscope className="w-8 h-8 text-violet-400 shrink-0" />
+          <div className="bg-[#111118]/80 border border-white/5 p-5 rounded-2xl flex gap-4 text-left">
+            <div className="p-2.5 h-10 rounded-xl bg-violet-500/5 text-violet-400 border border-violet-500/15 shrink-0">
+              <Stethoscope className="w-5 h-5" />
+            </div>
             <div>
-              <h4 className="text-sm font-bold text-white mb-1.5">Clinical Diagnoses</h4>
-              <p className="text-xs text-white/60 leading-relaxed">Generates comprehensive reviews containing diagnostic symptoms, causes, and warnings.</p>
+              <h4 className="text-sm font-bold text-slate-100 mb-1">Clear Explanations</h4>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">Provides simple overviews of possible skin issues, common triggers, and when to seek urgent care.</p>
             </div>
           </div>
 
           {/* F3 */}
-          <div className="bg-[#111118] border border-white/5 p-6 rounded-2xl flex gap-4">
-            <Sparkles className="w-8 h-8 text-violet-400 shrink-0" />
+          <div className="bg-[#111118]/80 border border-white/5 p-5 rounded-2xl flex gap-4 text-left">
+            <div className="p-2.5 h-10 rounded-xl bg-violet-500/5 text-violet-400 border border-violet-500/15 shrink-0">
+              <Sparkles className="w-5 h-5" />
+            </div>
             <div>
-              <h4 className="text-sm font-bold text-white mb-1.5">Suggested Products</h4>
-              <p className="text-xs text-white/60 leading-relaxed">Recommends therapeutic cleansers, barrier-repair moisturizers, gels, and ointments.</p>
+              <h4 className="text-sm font-bold text-slate-100 mb-1">Real Skincare Brands</h4>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">Avoids generic names. Recommends trusted real-world cleansers, healing creams, and sunscreens.</p>
             </div>
           </div>
 
           {/* F4 */}
-          <div className="bg-[#111118] border border-white/5 p-6 rounded-2xl flex gap-4">
-            <Shield className="w-8 h-8 text-violet-400 shrink-0" />
+          <div className="bg-[#111118]/80 border border-white/5 p-5 rounded-2xl flex gap-4 text-left">
+            <div className="p-2.5 h-10 rounded-xl bg-violet-500/5 text-violet-400 border border-violet-500/15 shrink-0">
+              <Shield className="w-5 h-5" />
+            </div>
             <div>
-              <h4 className="text-sm font-bold text-white mb-1.5">Daily Care Routines</h4>
-              <p className="text-xs text-white/60 leading-relaxed">Outlines exact morning and evening step logs to protect the skin barrier and accelerate healing.</p>
+              <h4 className="text-sm font-bold text-slate-100 mb-1">Daily Care Guides</h4>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">Gives step-by-step skincare instructions for morning and night so you know exactly what to do.</p>
             </div>
           </div>
 
           {/* F5 */}
-          <div className="bg-[#111118] border border-white/5 p-6 rounded-2xl flex gap-4">
-            <History className="w-8 h-8 text-violet-400 shrink-0" />
+          <div className="bg-[#111118]/80 border border-white/5 p-5 rounded-2xl flex gap-4 text-left">
+            <div className="p-2.5 h-10 rounded-xl bg-violet-500/5 text-violet-400 border border-violet-500/15 shrink-0">
+              <History className="w-5 h-5" />
+            </div>
             <div>
-              <h4 className="text-sm font-bold text-white mb-1.5">Persistent Scan Archiving</h4>
-              <p className="text-xs text-white/60 leading-relaxed">Secure history page saves and lists past analysis scans to evaluate progress over time.</p>
+              <h4 className="text-sm font-bold text-slate-100 mb-1">Track Your Progress</h4>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">Keeps a clean history logs page where you can save past scans and easily check if your skin is healing.</p>
             </div>
           </div>
 
           {/* F6 */}
-          <div className="bg-[#111118] border border-white/5 p-6 rounded-2xl flex gap-4">
-            <Eye className="w-8 h-8 text-violet-400 shrink-0" />
+          <div className="bg-[#111118]/80 border border-white/5 p-5 rounded-2xl flex gap-4 text-left">
+            <div className="p-2.5 h-10 rounded-xl bg-violet-500/5 text-violet-400 border border-violet-500/15 shrink-0">
+              <Eye className="w-5 h-5" />
+            </div>
             <div>
-              <h4 className="text-sm font-bold text-white mb-1.5">Privacy Conscious</h4>
-              <p className="text-xs text-white/60 leading-relaxed">Account actions secured via local JWT. Complete authorization barriers guard private entries.</p>
+              <h4 className="text-sm font-bold text-slate-100 mb-1 font-sans">Private & Secure</h4>
+              <p className="text-[11px] text-white/50 leading-relaxed font-light">Your personal details are securely stored. Your scans and photos belong strictly to you.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* SECTION 4: CTA BANNER */}
-      <section className="px-6 max-w-5xl mx-auto my-12">
-        <div className="relative rounded-3xl bg-gradient-to-tr from-violet-800 to-indigo-900 border border-white/10 p-10 md:p-14 text-center overflow-hidden">
+      <section className="px-6 max-w-5xl mx-auto my-10">
+        <div className="relative rounded-2xl bg-gradient-to-tr from-violet-800 to-indigo-950 border border-white/10 p-8 md:p-12 text-center overflow-hidden">
           {/* Subtle orb background */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-indigo-500/15 rounded-full blur-[80px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-indigo-500/10 rounded-full blur-[70px]" />
 
-          <div className="relative z-10">
-            <h2 className="font-serif font-bold text-3xl md:text-4xl text-white mb-4">
-              Ready To Clear Up Your Skin Outlook?
+          <div className="relative z-10 space-y-4">
+            <h2 className="font-serif font-bold text-2xl md:text-3xl text-white">
+              Ready to Understand Your Skin?
             </h2>
-            <p className="text-indigo-200/85 text-xs md:text-sm max-w-lg mx-auto mb-8 font-light">
-              Join thousands of clinical testing volunteers getting instant skin disease detections, symptom lists, and therapeutic selections.
+            <p className="text-indigo-200/75 text-[11px] md:text-xs max-w-lg mx-auto leading-relaxed">
+              Create your free account today. Start a scan, track your symptoms, and build a personalized skincare profile with smart AI assistance.
             </p>
-            <Link
-              to={isAuthenticated ? "/scan/new" : "/register"}
-              className="px-8 py-3.5 bg-white text-indigo-950 font-bold rounded-xl text-xs hover:bg-slate-100 transition active:scale-98"
-            >
-              CREATE FREE ACCOUNT NOW
-            </Link>
+            <div className="pt-2">
+              <Link
+                to={isAuthenticated ? "/scan/new" : "/register"}
+                className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-xl text-xs hover:bg-slate-100 transition active:scale-98 inline-block cursor-pointer select-none"
+              >
+                GET STARTED FREE
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="mt-20 pt-8 border-t border-white/5 text-center px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/40">
-          <div className="font-bold flex items-center gap-1.5">
-            <span>🔬</span> DermScan AI
-          </div>
-          <p>© 2206 DermScan AI — Ho Technical University Project. All Rights Reserved.</p>
-          <div className="max-w-xs md:text-right">
-            Disclaimer: Educational demo purpose only. This app is not a clinical tool or substitute for professional medical guidelines.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

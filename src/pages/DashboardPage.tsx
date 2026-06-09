@@ -62,90 +62,90 @@ export default function DashboardPage() {
         {/* Header greetings */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/5">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-violet-400 block mb-2">OVERVIEW PORTAL</span>
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-violet-400 block mb-2">Our Dashboard</span>
             <h1 className="font-serif font-bold text-35px md:text-4xl text-white leading-tight">
               Welcome Back, {firstName} 👋
             </h1>
-            <p className="text-white/50 text-xs mt-1">
-              Select symptoms and analyze image detections to keep your skin integrity updated.
+            <p className="text-white/60 text-sm mt-1">
+              Pick your symptoms and scan a photo to check your skin health.
             </p>
           </div>
           
           <Link
             to="/scan/new"
-            className="self-start md:self-auto px-5 py-3 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-xl font-bold text-xs tracking-wider text-white shadow-lg shadow-violet-500/20 active:scale-98 hover:opacity-95 transition flex items-center gap-2"
+            className="self-start md:self-auto px-5 py-3.5 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-xl font-extrabold text-sm tracking-wider text-white shadow-lg shadow-violet-500/20 active:scale-98 hover:opacity-95 transition flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            ANALYZE NEW SCAN
+            START NEW SKIN CHECK
           </Link>
         </div>
 
         {/* Stats Metrics Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Card 1 */}
-          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-32 group hover:border-white/12 transition">
+          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-36 group hover:border-white/12 transition">
             <span className="absolute top-4 right-4 w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
               <Microscope className="w-5 h-5" />
             </span>
             <div>
-              <p className="text-white/45 text-[11px] uppercase font-bold tracking-widest leading-none">Total Scans</p>
-              <h2 className="text-3xl font-black font-sans text-white mt-2 leading-none">
+              <p className="text-white/45 text-xs uppercase font-extrabold tracking-widest leading-none">Checks Done</p>
+              <h2 className="text-3xl font-black font-sans text-white mt-2.5 leading-none">
                 {stats?.total_scans || 0}
               </h2>
             </div>
-            <p className="text-[10px] text-white/45 font-medium leading-none">Permanent records saved</p>
+            <p className="text-xs text-white/45 font-semibold leading-none">Reports saved securely</p>
           </div>
 
           {/* Card 2 */}
-          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-32 group hover:border-white/12 transition">
+          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-36 group hover:border-white/12 transition">
             <span className="absolute top-4 right-4 w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
               <Calendar className="w-5 h-5" />
             </span>
             <div>
-              <p className="text-white/45 text-[11px] uppercase font-bold tracking-widest leading-none">Last Scan</p>
-              <h2 className="text-xl font-bold font-sans text-white mt-3 truncate leading-none">
+              <p className="text-white/45 text-xs uppercase font-extrabold tracking-widest leading-none">Latest Skin Check</p>
+              <h2 className="text-2xl font-black font-sans text-white mt-3 truncate leading-none">
                 {formatStatsDate(stats?.last_scan_date || null)}
               </h2>
             </div>
-            <p className="text-[10px] text-white/45 font-medium leading-none">Most recent diagnostic</p>
+            <p className="text-xs text-white/45 font-semibold leading-none">Most recent result</p>
           </div>
 
           {/* Card 3 */}
-          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-32 group hover:border-white/12 transition">
+          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-36 group hover:border-white/12 transition">
             <span className="absolute top-4 right-4 w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
               <BarChart2 className="w-5 h-5" />
             </span>
             <div>
-              <p className="text-white/45 text-[11px] uppercase font-bold tracking-widest leading-none">Common Profile</p>
-              <h2 className="text-base font-extrabold text-white mt-4 truncate max-w-[150px] leading-tight" title={stats?.most_common_condition || 'None yet'}>
+              <p className="text-white/45 text-xs uppercase font-extrabold tracking-widest leading-none">Condition Found</p>
+              <h2 className="text-lg font-black text-white mt-3 truncate max-w-[150px] leading-tight" title={stats?.most_common_condition || 'None yet'}>
                 {stats?.most_common_condition || 'None yet'}
               </h2>
             </div>
-            <p className="text-[10px] text-white/45 font-medium leading-none">Repetitive disease metrics</p>
+            <p className="text-xs text-white/45 font-semibold leading-none">Common conditions detected</p>
           </div>
 
           {/* Card 4 */}
-          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-32 group hover:border-white/12 transition">
+          <div className="bg-[#111118] border border-white/7 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-36 group hover:border-white/12 transition">
             <span className="absolute top-4 right-4 w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
               <Award className="w-5 h-5" />
             </span>
             <div>
-              <p className="text-white/45 text-[11px] uppercase font-bold tracking-widest leading-none">Member Since</p>
-              <h2 className="text-lg font-bold font-sans text-white mt-3.5 leading-none">
+              <p className="text-white/45 text-xs uppercase font-extrabold tracking-widest leading-none">Member Since</p>
+              <h2 className="text-xl font-bold font-sans text-white mt-3 leading-none">
                 {getMemberSince()}
               </h2>
             </div>
-            <p className="text-[10px] text-white/45 font-medium leading-none">HTU educational participant</p>
+            <p className="text-xs text-white/45 font-semibold leading-none">HTU Research Project</p>
           </div>
         </div>
 
         {/* Recent Scans Section */}
         <div className="space-y-6">
           <div className="flex justify-between items-center pb-2">
-            <h2 className="font-serif font-bold text-2xl text-white">Recent Analyses</h2>
+            <h2 className="font-serif font-bold text-2xl text-white">Your Recent Skin Checks</h2>
             {scans.length > 0 && (
               <Link to="/history" className="text-xs font-bold text-violet-400 hover:text-violet-300 flex items-center gap-1">
-                VIEW ALL RECORDS <ArrowRight className="w-3.5 h-3.5" />
+                VIEW ALL PAST CHECKS <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             )}
           </div>

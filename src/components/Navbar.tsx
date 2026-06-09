@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
-import { LogOut, User as UserIcon, PlusCircle, History, LayoutDashboard, Menu, X } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext.js';
+import { LogOut, User as UserIcon, PlusCircle, History, LayoutDashboard, Menu, X, Sun, Moon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -89,6 +91,15 @@ export default function Navbar() {
 
         {/* Right Section actions */}
         <div className="flex items-center gap-4">
+          {/* Light / Dark Mode Toggle Switch */}
+          <button
+            onClick={toggleTheme}
+            className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 active:scale-95 transition cursor-pointer select-none"
+            title={theme === 'dark' ? 'Switch to light layout' : 'Switch to dark layout'}
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-500" />}
+          </button>
+
           {isAuthenticated && user ? (
             <div className="relative" ref={dropdownRef}>
               {/* Avatar trigger button */}
