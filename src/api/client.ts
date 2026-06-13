@@ -1,7 +1,27 @@
 import axios from 'axios';
 
+const getBaseURL = () => {
+  const metaEnv = (import.meta as any).env;
+  if (metaEnv && metaEnv.VITE_API_URL) {
+    return metaEnv.VITE_API_URL;
+  }
+  // When running inside a native mobile app/webview (e.g. android-webview, capacitor, or file://)
+  // we must talk to the deployed server instead of local file-system routing.
+  const isCapacitorOrWebView = 
+    window.location.protocol === 'file:' || 
+    window.location.hostname === 'localhost' || 
+    window.location.hostname === '10.0.2.2' || // Android emulator loopback
+    window.location.origin.includes('capacitor');
+
+  if (isCapacitorOrWebView) {
+    // Dynamic fallback to the hosted Cloud Run server
+    return 'https://ais-pre-rbnk22m5tsatvchbsrb64e-899591562881.europe-west2.run.app/api';
+  }
+  return '/api';
+};
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: getBaseURL(),
 });
 
 // Attach authorization headers dynamically

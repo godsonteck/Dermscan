@@ -1,0 +1,12 @@
+{
+  "appId": "com.dermscanai.app",
+  "appName": "DermScan AI",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": [
+      "ais-pre-rbnk22m5tsatvchbsrb64e-899591562881.europe-west2.run.app"
+    ]
+  }
+}

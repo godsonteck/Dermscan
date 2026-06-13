@@ -21,6 +21,20 @@
   --card-border: rgba(15, 23, 42, 0.08);
 }
 
+/* Base HTML sizing & transition for accessibility scaling */
+html {
+  font-size: 16px;
+  transition: font-size 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.scale-large {
+  font-size: 18.25px !important; /* Elegant +14% scale */
+}
+
+html.scale-xlarge {
+  font-size: 20.5px !important; /* Elegant +28% scale */
+}
+
 html.dark {
   --bg-color: #020617;
   --text-color: #e2e8f0;

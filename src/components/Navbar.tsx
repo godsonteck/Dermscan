@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, fontScale, changeFontScale } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -90,7 +90,24 @@ export default function Navbar() {
         )}
 
         {/* Right Section actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {/* Accessibility text resize controller */}
+          <button
+            onClick={() => {
+              if (fontScale === 'normal') changeFontScale('large');
+              else if (fontScale === 'large') changeFontScale('xlarge');
+              else changeFontScale('normal');
+            }}
+            className="h-10 px-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-1.5 text-white hover:bg-white/10 active:scale-95 transition cursor-pointer select-none"
+            title={`Text Scale: ${fontScale === 'normal' ? 'Standard (100%)' : fontScale === 'large' ? 'Large (114%)' : 'Extra Large (128%)'}. Click to adjust.`}
+          >
+            <span className="text-xs font-semibold text-violet-400">A</span>
+            <span className="text-sm font-extrabold text-violet-400">A</span>
+            <span className="text-[10px] bg-violet-500/10 text-violet-300 px-1.5 py-0.5 rounded font-mono uppercase font-black tracking-wider scale-90">
+              {fontScale === 'normal' ? '100%' : fontScale === 'large' ? '114%' : '128%'}
+            </span>
+          </button>
+
           {/* Light / Dark Mode Toggle Switch */}
           <button
             onClick={toggleTheme}
@@ -154,86 +171,36 @@ export default function Navbar() {
           )}
 
           {/* Mobile Menu Toggle Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white outline-none hover:bg-white/10 active:scale-95 transition"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {!isAuthenticated && (
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white outline-none hover:bg-white/10 active:scale-95 transition"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile Responsive Menu */}
-      {mobileMenuOpen && (
+      {mobileMenuOpen && !isAuthenticated && (
         <div className="md:hidden fixed top-[69px] left-0 right-0 bg-[#0a0a0f] border-b border-white/10 p-5 shadow-2xl animate-in slide-in-from-top duration-200 z-30">
-          {isAuthenticated ? (
-            <div className="flex flex-col gap-4">
-              <Link
-                to="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-xl font-bold text-sm ${
-                  isActive('/dashboard') ? 'bg-violet-500/10 text-violet-400' : 'text-white/70 hover:bg-[#111118]'
-                }`}
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                Dashboard Overview
-              </Link>
-              <Link
-                to="/scan/new"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-xl font-bold text-sm ${
-                  isActive('/scan/new') ? 'bg-violet-500/10 text-violet-400' : 'text-white/70 hover:bg-[#111118]'
-                }`}
-              >
-                <PlusCircle className="w-4 h-4" />
-                Analyze New Scan
-              </Link>
-              <Link
-                to="/history"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-xl font-bold text-sm ${
-                  isActive('/history') ? 'bg-violet-500/10 text-violet-400' : 'text-white/70 hover:bg-[#111118]'
-                }`}
-              >
-                <History className="w-4 h-4" />
-                Diagnostic History
-              </Link>
-              <Link
-                to="/profile"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-xl font-bold text-sm ${
-                  isActive('/profile') ? 'bg-violet-500/10 text-violet-400' : 'text-white/70 hover:bg-[#111118]'
-                }`}
-              >
-                <UserIcon className="w-4 h-4" />
-                My Profile
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-3 p-3 rounded-xl font-bold text-sm text-rose-400 hover:bg-rose-500/10 transition mt-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout Account
-              </button>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-3">
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center p-3 border border-white/10 hover:bg-white/5 text-slate-100 font-bold rounded-xl text-sm transition"
-              >
-                LOGIN
-              </Link>
-              <Link
-                to="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center p-3.5 bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-violet-500/20 transition"
-              >
-                GET STARTED
-              </Link>
-            </div>
-          )}
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-center p-3 border border-white/10 hover:bg-white/5 text-slate-100 font-bold rounded-xl text-sm transition"
+            >
+              LOGIN
+            </Link>
+            <Link
+              to="/register"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-center p-3.5 bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-violet-500/20 transition"
+            >
+              GET STARTED
+            </Link>
+          </div>
         </div>
       )}
     </nav>

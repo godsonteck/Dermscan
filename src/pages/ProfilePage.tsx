@@ -14,6 +14,33 @@ export default function ProfilePage() {
   const [profileData, setProfileData] = useState<ProfileStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
+  // PWA detection & installation states
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isStandalone, setIsStandalone] = useState(() => {
+    return window.matchMedia('(display-mode: standalone)').matches || 
+      (window.navigator as any).standalone === true;
+  });
+
+  useEffect(() => {
+    const handleInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+  }, []);
+
+  const triggerInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+      setIsStandalone(true);
+      toast.success('DermScan AI downloaded onto your device successfully!');
+    }
+  };
+  
   // Clean, focused state variables
   const [fullName, setFullName] = useState('');
   const [skinType, setSkinType] = useState('');
@@ -166,6 +193,66 @@ export default function ProfilePage() {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* Mobile PWA Application Installer Widget */}
+            <div className="bg-[#111118]/80 border border-white/5 rounded-2xl p-5 space-y-4 backdrop-blur-sm">
+              <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-violet-400 font-mono">Mobile App Client</h4>
+                {isStandalone ? (
+                  <span className="flex items-center gap-1.5 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Standalone
+                  </span>
+                ) : (
+                  <span className="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full font-bold">
+                    Web Mode
+                  </span>
+                )}
+              </div>
+
+              {isStandalone ? (
+                <div className="space-y-2">
+                  <p className="text-xs text-white/80 leading-relaxed font-normal">
+                    You are running DermScan AI as an installed mobile application. All features, camera scanner actions, and offline databases are running natively.
+                  </p>
+                  <p className="text-[10px] text-white/40 leading-relaxed italic font-mono">
+                    Version 1.0.4 (Build Stable) • HTU Research Project
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-xs text-white/75 leading-relaxed font-normal">
+                    Install DermScan AI on your mobile device to get a seamless, immersive, fullscreen camera checkup experience.
+                  </p>
+
+                  {deferredPrompt ? (
+                    <button
+                      onClick={triggerInstall}
+                      className="w-full py-2.5 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-xl text-xs font-black text-white hover:opacity-95 active:scale-95 transition-all select-none shadow-md shadow-violet-500/10 cursor-pointer text-center"
+                    >
+                      ⚡ INSTANT ONE-TAP INSTALL
+                    </button>
+                  ) : (
+                    <div className="p-3 bg-white/3 border border-white/5 rounded-xl space-y-2 text-left">
+                      <p className="text-[11px] text-violet-300 font-bold block">How to Install on Mobile:</p>
+                      
+                      {/* iOS Instructions */}
+                      <div className="space-y-1 text-[10px] text-white/60">
+                        <p className="font-semibold text-white/80">📱 Apple iOS (Safari):</p>
+                        <p className="pl-2 leading-relaxed">1. Press <span className="text-white">"Share"</span> button at absolute bottom</p>
+                        <p className="pl-2 leading-relaxed">2. Select <span className="text-white">"Add to Home Screen"</span></p>
+                      </div>
+                      
+                      {/* Android Instructions */}
+                      <div className="space-y-1 text-[10px] text-white/60 pt-1 border-t border-white/5">
+                        <p className="font-semibold text-white/80">🤖 Google Android (Chrome):</p>
+                        <p className="pl-2 leading-relaxed">1. Press 3 vertical dots at top right</p>
+                        <p className="pl-2 leading-relaxed">2. Select <span className="text-white">"Install app"</span> or <span className="text-white">"Add to Home screen"</span></p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Session Management */}

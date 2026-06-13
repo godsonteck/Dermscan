@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import Navbar from './components/Navbar.js';
 import Footer from './components/Footer.js';
+import BottomNav from './components/BottomNav.js';
 import { Toaster } from 'react-hot-toast';
 
 // Import Pages
@@ -81,7 +82,12 @@ export default function App() {
           </main>
 
           {/* Global Footer with HTU credentials & disclaimers */}
-          <Footer />
+          <div className="pb-24 md:pb-0">
+            <Footer />
+          </div>
+
+          {/* Bottom mobile toolbar navigation */}
+          <BottomNav />
 
           {/* Action Popups Notification Toaster */}
           <Toaster

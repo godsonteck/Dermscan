@@ -1,0 +1,24 @@
+{
+  "name": "DermScan AI Skin Diagnosis",
+  "short_name": "DermScan AI",
+  "description": "Smart, automated skin health diagnosis helper using advanced machine learning models.",
+  "start_url": "/",
+  "display": "standalone",
+  "brightness": "dark",
+  "background_color": "#020617",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "categories": ["medical", "health", "skin-care"],
+  "icons": [
+    {
+      "src": "https://img.icons8.com/isometric/452/microscope.png",
+      "sizes": "452x452",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/isometric/512/microscope.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
